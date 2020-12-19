@@ -22,7 +22,7 @@ void SendMSG(String address , String command , String data){
     Serial.println("<CONSOLE> Radio transmission failed");
   }
  
-  Serial.print("<CONSOLE - > "); Serial.print(address); Serial.print(" ("); Serial.print(msg.length()+1); Serial.print(") >"); Serial.println(text);
+ // Serial.print("<CONSOLE - > "); Serial.print(address); Serial.print(" ("); Serial.print(msg.length()+1); Serial.print(") >"); Serial.println(text);
   delay(5);
 
   digitalWrite(TX_LED, LOW);
@@ -40,8 +40,8 @@ void radio_check() {
     text_str = text; // Convert char to string to deal with
     int clientID = text_str.substring(0,3).toInt();
 
-    Serial.print("<REMOTE OUTPUT>"); Serial.println(text_str);
-    Serial.print("<REMOTE NODE #"); Serial.print(text_str.substring(0,3)); Serial.print("> "); Serial.println(text_str.substring(4,8));
+  //  Serial.print("<REMOTE OUTPUT>"); Serial.println(text_str);
+  //  Serial.print("<REMOTE NODE #"); Serial.print(text_str.substring(0,3)); Serial.print("> "); Serial.println(text_str.substring(4,8));
     
 
    //Client Registration
@@ -50,11 +50,19 @@ void radio_check() {
     SendMSG(text_str.substring(0,3) , "REGG" , "OK");
     
     gameData_roster[clientID][3] = "1"; // Mark player as registered
+    Serial.print("<REMOTE NODE #"); Serial.print(text_str.substring(0,3)); Serial.println("> New Registration ");
+
 //    gameData_roster[clientID][1] = names[clientID]; // Mark player as registered
    }
 
    // PONG
    else if (text_str.substring(4,8) == "PONG") {
+    ping_ended[clientID] = text_str.substring(9).toInt(); /* Convert for results */
+
+    //Serial.print("<REMOTE NODE #"); Serial.print(text_str.substring(0,3)); Serial.print("> Ping time: "); Serial.println(ping_started-ping_ended[clientID]);
+
+    /* Send results to client */
+    SendMSG(text_str.substring(0,3), "PSTA" , String(ping_started-ping_ended[clientID]));
     
     //Check if client is registered, if not tell client to re-register
     if (gameData_roster[clientID][3] == "0") {

@@ -23,12 +23,12 @@ void setup()
   radio.begin();
   radio.setPALevel(RF24_PA_HIGH);   // RF24_PA_MIN ,RF24_PA_LOW, RF24_PA_HIGH, RF24_PA_MAX
   if (!radio.setDataRate( RF24_2MBPS )) { Serial.println("<CONSOLE> Set data rate failed!"); } // RF24_250KBPS, RF24_1MBPS, RF24_2MBPS
-  //radio.setRetries(15, 4);
+  radio.setRetries(3, 5);
   radio.setChannel(22);
   radio.setCRCLength(RF24_CRC_8);
   //radio.enableAckPayload();
   //radio.setPayloadSize(20);
-  radio.setAutoAck(0);
+  //radio.setAutoAck(0);
   
   /* Radio 1
    *  

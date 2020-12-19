@@ -33,6 +33,8 @@ int gameData_status = 0;
 
 int long last_ping = 0;
 bool reg_pong_flip = true;
+long unsigned ping_started;
+long unsigned ping_ended[max_clients];
 
 String console_input = "";
 
